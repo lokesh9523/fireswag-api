@@ -1,0 +1,522 @@
+openapi: 3.0.0
+info:
+  title: FIRESWAAG API
+  description: FIRESWAAG Swagger API documentation
+  version: 0.0.1
+servers:
+  - url: http://localhost:3001/api
+tags:
+  - name: Dashboard
+    description: FIRESWAAG | DB
+paths:
+  # Accounts
+  /login:
+    post:
+      summary: Login
+      tags:
+        - Dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  /signup:
+    post:
+      summary: Login
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - role
+                - first_name
+                - last_name
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  #product-types
+  /product-type:
+    get:
+      summary: Product Type
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+    post:
+      summary: Add Product Type
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - active
+              properties:
+                name:
+                  type: string
+                active:
+                  type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  /product-type/{id}:
+    get:
+      summary: Get product type by id
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+    put:
+      summary: Update product type by id
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product-type"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+    delete:
+      summary: delete product type by id
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  #productss
+  /products:
+    get:
+      summary: Get all Products
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+    post:
+      summary: Add Products
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Products"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  /products/{id}:
+    get:
+      summary: Get product by id
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+    put:
+      summary: Update products by id
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Products"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+    delete:
+      summary: delete product by id
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+              
+
+  # upload
+  /upload-image:
+    post:
+      summary: Upload FormData image
+      description: 1. uploadImage only upload image and will return path. save to field /images/ as save record again 2. Pass (table, id, field) will upload image as well saves in record
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                table:
+                  type: string
+                id:
+                  type: string
+                field:
+                  type: string
+                uploadImage:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  /upload-csv:
+    post:
+      summary: Upload FormData .csv
+      description: 1. uploadCsv upload csv to add users
+      tags:
+        - Dashboard
+      security:
+        - ApiJWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                uploadCsv:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+
+components:
+  securitySchemes:
+    ApiJWTAuth:
+      type: "apiKey"
+      name: "fire-swag-jwt-auth"
+      in: "header"
+    ApiJWTUser:
+      type: "apiKey"
+      name: "testd-jwt-user"
+      in: "header"
+
+  responses:
+
+  schemas:
+    ResponseFormat:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          description: Object or Array
+        count:
+          type: number
+        error:
+          description: String or Object
+        token:
+          type: string
+
+    Accounts:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+        - role_id
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+          format: email
+        role_id:
+          description: String or object
+        created_date:
+          description: Date and time
+        phone:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+    Sessions:
+      type: object
+      required:
+        - account_id
+        - ip_address
+        - login_time
+        - last_active_time
+        - status
+      properties:
+        account_id:
+          description: String or object
+        ip_address:
+          type: string
+        login_time:
+          description: Date and time
+        last_active_time:
+          description: Date and time
+        status:
+          type: string
+          enum: [Online, Terminated, Session Expired, Logged Out]
+    Users:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - password
+        - email
+        - phone
+      properties:
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        middle_name:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+          format: email
+        created_date:
+          type: string
+          format: date
+        phone:
+          type: string
+        phone_verified:
+          type: boolean
+        address:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        dob:
+          type: string
+        gender:
+          type: string
+        ip_address:
+          type: string
+    Roles:
+      type: object
+      required:
+        - name
+        - active
+        - created_date
+      properties:
+        name:
+          type: string
+          enum: [SUPERADMIN, ADMIN, USER]
+        active:
+          type: boolean
+        created_date:
+          type: string
+          format: date
+    Product-type:
+      type: object
+      required:
+        - name
+        - display_name
+        - active
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        active:
+          type: boolean
+        created_date:
+          type: string
+          format: date
+    Products:
+      type: object
+      required:
+        - product_type_id
+        - name
+        - active
+        - description
+        - price
+        - discount
+        - total_count
+        - pre_booking
+        - image_url
+        - pre_booking_price
+      properties:
+        product_type_id:
+          description: String or object
+        name:
+          type: string
+        active:
+          type: boolean
+        description:
+          type: string
+        price:
+          type: string
+        discount:
+          type: string
+        total_count:
+          type: number
+        pre_booking:
+          type: boolean
+        created_date:
+          type: string
+          format: date
+        image_url:
+          type: string
+        pre_booking_price:
+          type: string
