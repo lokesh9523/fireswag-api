@@ -96,8 +96,8 @@ export interface Products {
   price: string;
   discount: string;
   total_count: number;
-  pre_booking: boolean;
+  pre_booking?: boolean;
   created_date?: string;
   image_url: string;
-  pre_booking_price: string;
+  pre_booking_price?: string;
 }

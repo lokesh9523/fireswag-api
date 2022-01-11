@@ -466,9 +466,7 @@ components:
         - price
         - discount
         - total_count
-        - pre_booking
         - image_url
-        - pre_booking_price
       properties:
         product_type_id:
           description: String or object
