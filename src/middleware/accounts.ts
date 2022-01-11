@@ -9,9 +9,9 @@ import { SessionsDB } from '../models/sessions';
 import { AccountJwtObject } from '../utils/interfaces';
 
 export const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
-  const token = <string>req.headers['fire-swag-jwt-auth'];
+  const token = <string>req.headers['fireswag-jwt-auth'];
   try {
-    let jwtPayload = <AccountJwtObject>jwt.verify(token, config.JWT_COMMON_SECRET);
+    let jwtPayload = <AccountJwtObject>jwt.verify(token, config.JWT_SECRET);
     res.locals.jwtPayload = jwtPayload;
     next();
   } catch (error) {
