@@ -1,0 +1,14 @@
+logLevel: debug
+port: 3001
+sslEnabled: false
+jwtSecret: jwtSecret
+jwtExpiresIn: 1h
+redisPort: 6379
+mongodb:
+  host: localhost
+  port: 27017
+  db: fireswag
+  authentication: false
+  credentials:
+    user: test
+    password: test123e
