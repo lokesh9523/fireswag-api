@@ -7,12 +7,14 @@ import { UploadController } from '../controllers/upload';
 import { AccountsController } from '../controllers/accounts';
 import { ProductTypeController } from '../controllers/product-type';
 import { ProductsController } from '../controllers/products';
+import { UserController } from '../controllers/user';
 export class Routes {
 
   public uploadController: UploadController = new UploadController();
   public accountsController: AccountsController = new AccountsController();
   public productTypeController: ProductTypeController = new ProductTypeController();
   public productsController: ProductsController = new ProductsController();
+  public userController: UserController = new UserController();
   public routes(app: Application): Application {
 
     app.route('/')
@@ -27,28 +29,40 @@ export class Routes {
     app.route('/signup')
       .post(checkJwt, (req, res) => this.accountsController.addAccount(req, res));
     //product Type
-    app.route('/product-type')
-      .get(checkJwt, (req, res) => this.productTypeController.getAllProductType(req, res))
-      .post(checkJwt, (req, res) => this.productTypeController.addProductType(req, res));
 
     app.route('/product-type/:id')
       .get(checkJwt, (req, res) => this.productTypeController.getProductTypeById(req, res))
       .put(checkJwt, (req, res) => this.productTypeController.updateProductById(req, res))
       .delete(checkJwt, (req, res) => this.productTypeController.deleteProductTypeId(req, res));
 
+    app.route('/product-type')
+      .get(checkJwt, (req, res) => this.productTypeController.getAllProductType(req, res))
+      .post(checkJwt, (req, res) => this.productTypeController.addProductType(req, res));
+
     //products
-    app.route('/products')
-      .get(checkJwt, (req, res) => this.productsController.getAllProductByType(req, res))
-      .post(checkJwt, (req, res) => this.productsController.addProduct(req, res));
 
     app.route('/products/:id')
       .get(checkJwt, (req, res) => this.productsController.getProductById(req, res))
       .put(checkJwt, (req, res) => this.productsController.updateProductById(req, res))
       .delete(checkJwt, (req, res) => this.productsController.deleteProductById(req, res));
 
+    app.route('/products')
+      .get(checkJwt, (req, res) => this.productsController.getAllProductByType(req, res))
+      .post(checkJwt, (req, res) => this.productsController.addProduct(req, res));
+
     // Upload Image
     app.route('/upload-image')
       .post(checkJwt, (req, res) => this.uploadController.uploadFile(req, res));
+
+    //store
+    app.route('/store/products/:id')
+      .get((req, res) => this.userController.getProductById(req, res));
+
+    app.route('/store/products')
+      .get((req, res) => this.userController.getAllProductByType(req, res));
+
+    app.route('/store/product-type')
+      .get((req, res) => this.userController.getAllProductType(req, res))
 
     app.route('*').get(this.send404);
     app.route('*').post(this.send404);

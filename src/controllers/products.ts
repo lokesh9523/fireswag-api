@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { logger } from '../lib/logger';
 import { AppConstants } from '../utils/app-constants';
 import { Roles, ResponseFormat, ProductType, Products } from '../models/swagger';
-import { ProductTypeDB } from '../models/product-type'
+import { ProductTypeDB } from '../models/product-type';
 import { ProductsDB } from '../models/products';
 import { paginateQuery } from '../lib/utlis';
 

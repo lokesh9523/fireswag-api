@@ -9,6 +9,8 @@ servers:
 tags:
   - name: Dashboard
     description: FIRESWAAG | DB
+  - name: Store
+    description: FIRESWAG | STORE
 paths:
   # Accounts
   /login:
@@ -299,7 +301,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseFormat"
-
+#product-types
+  /store/product-type:
+    get:
+      summary: Product Type
+      tags:
+        - Store
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  /store/products:
+    get:
+      summary: Get all Products
+      tags:
+        - Store
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
+  /store/products/{id}:
+    get:
+      summary: Get product by id
+      tags:
+        - Store
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseFormat"
 components:
   securitySchemes:
     ApiJWTAuth:
