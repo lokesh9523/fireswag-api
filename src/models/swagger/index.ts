@@ -64,14 +64,10 @@ export interface Users {
   created_date?: string;
   phone: string;
   phone_verified?: boolean;
-  address?: string;
-  address2?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  dob?: string;
-  gender?: string;
-  ip_address?: string;
+  email_verified?: boolean;
+
+  /** String or object */
+  role_id?: any;
 }
 
 export interface Roles {
@@ -100,4 +96,20 @@ export interface Products {
   created_date?: string;
   image_url: string;
   pre_booking_price?: string;
+}
+
+export interface UserAddress {
+  /** String or object */
+  user_id: any;
+  home_phone?: string;
+  created_date?: string;
+  office_phone?: string;
+  address: string;
+  address2?: string;
+  city: string;
+  state: string;
+  country: string;
+
+  /** String or object */
+  role_id?: any;
 }

@@ -12,3 +12,37 @@ export const paginateQuery = (req: Request) => {
 
     return { sort, skip, limit };
 };
+export const getLookupQuery = (from: string, localField: string, foreignField: string, as: string) => {
+    return {
+        $lookup: {
+            from,
+            localField,
+            foreignField,
+            as
+        }
+    };
+}
+export const queryFieldsIn = (search_string: string, collection: 'Products') => {
+    return getSearchFieldsFromCollectionName(collection).map(x => {
+        console.log(x,"============================x")
+        return { [x]: { $in: stringToRegex(search_string) } };
+    });
+};
+export const stringToRegex = (string: string): RegExp[] => {
+    return string.split(' ').map(x => {
+        console.log(x.length,'============x.length')
+        if (x.length)
+        console.log(new RegExp(x,'i'),"=================")
+            return new RegExp(x, 'i');
+    });
+};
+export const getSearchFieldsFromCollectionName = (collection: 'Products'): string[] => {
+    console.log(collection,"=================ssss")
+    switch (collection) {
+        case 'Products':
+            return ['name'];
+
+        default:
+            return [];
+    }
+};

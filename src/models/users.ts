@@ -13,6 +13,7 @@ const UsersSchema = new Schema({
   password: { type: String },
   active: { type: Boolean, required: true, default: true },
   created_date: { type: Date, required: true, default: new Date(), index: true },
+  role_id: { type: Schema.Types.ObjectId, ref: 'Roles', required: true },
   // populationsettings_id: { type: Schema.Types.ObjectId, ref: 'PopulationSettings', sparse: true },
   email: {
     type: String,
@@ -37,15 +38,7 @@ const UsersSchema = new Schema({
     }
   },
   phone_verified: { type: Boolean },
-  office_phone: { type: String },
-  home_phone: { type: String },
-  address: { type: String },
-  address2: { type: String },
-  city: { type: String },
-  state: { type: String },
-  county: { type: String },
-  dob: { type: Date },
-  gender: { type: String },
+  email_verified: { type: Boolean },
   ip_address: { type: String },
 
 });
