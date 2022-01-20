@@ -51,11 +51,19 @@ export class Routes {
       .get(checkJwt, (req, res) => this.productsController.getAllProductByType(req, res))
       .post(checkJwt, (req, res) => this.productsController.addProduct(req, res));
 
+    //users
+    app.route('/user/:id')
+      .get(checkJwt, (req, res) => this.userController.getUserById(req, res))
+      .put(checkJwt, (req, res) => this.userController.updateUserById(req, res));
+
+    app.route('/users')
+      .get(checkJwt, (req, res) => this.userController.getAllUsers(req, res));
+
     // Upload Image
     app.route('/upload-image')
       .post(checkJwt, (req, res) => this.uploadController.uploadFile(req, res));
 
-    //store
+    //store-users
     app.route('/store/products/:id')
       .get((req, res) => this.userController.getProductById(req, res));
 
@@ -72,14 +80,14 @@ export class Routes {
     app.route('/store/login')
       .post((req, res) => this.userController.loginUser(req, res));
 
-    app.route('/store/user-address')
-      .get((req, res) => this.userController.addUserAddress(req, res))
-      .post((req, res) => this.userController.updateUserAddress(req, res));
-
     app.route('/store/user-address/:id')
-      .get((req, res) => this.userController.addUserAddress(req, res))
-      .post((req, res) => this.userController.updateUserAddress(req, res))
-      .delete((req, res) => this.userController.deleteUserAddressById(req, res));
+      .get(checkUserJwt, (req, res) => this.userController.addUserAddress(req, res))
+      .post(checkUserJwt, (req, res) => this.userController.updateUserAddress(req, res))
+      .delete(checkUserJwt, (req, res) => this.userController.deleteUserAddressById(req, res));
+
+    app.route('/store/user-address')
+      .get(checkUserJwt, (req, res) => this.userController.addUserAddress(req, res))
+      .post(checkUserJwt, (req, res) => this.userController.updateUserAddress(req, res));
 
 
     app.route('*').get(this.send404);

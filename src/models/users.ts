@@ -19,6 +19,7 @@ const UsersSchema = new Schema({
     type: String,
     sparse: true,
     unique: true,
+    required: true,
     validate: {
       validator: (v) => {
         return emailRegex.test(v);
@@ -30,6 +31,7 @@ const UsersSchema = new Schema({
     type: String,
     sparse: true,
     unique: true,
+    required: true,
     validate: {
       validator: (v) => {
         return phoneRegex.test(v);

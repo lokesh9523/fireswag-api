@@ -22,6 +22,7 @@ export class AccountsController {
         try {
             logger.debug('Add Account', req.body);
             if (res.locals.jwtPayload.role_type === AppConstants.ROLE_SUPER_ADMIN) {
+                //you need to encrypt the password from frontend and send the password
                 let rolesData = await RolesDB.findOne({ name: req.body.role }).exec();
                 if (!rolesData) return this.sendResponse(res, 404, { success: false, message: 'Invalid Role' });
                 req.body.role_id = rolesData._id;
@@ -43,6 +44,7 @@ export class AccountsController {
         try {
             logger.debug('Login Account', req.body);
             const { email, password } = req.body;
+            //you need to encrypt the password from frontend and send the password
             if (!email || !password) return this.sendResponse(res, 400, { success: false, message: 'Invalid Request.' });
             // find account from db
             let account = await AccountsDB.findOne({ email })

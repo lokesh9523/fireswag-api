@@ -109,7 +109,4 @@ export interface UserAddress {
   city: string;
   state: string;
   country: string;
-
-  /** String or object */
-  role_id?: any;
 }

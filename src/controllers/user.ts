@@ -112,6 +112,7 @@ export class UserController {
     try {
       logger.debug('Login User', req.body);
       const { email, password } = req.body;
+      //you need to encrypt the password from frontend and send the password
       if (!email || !password) return this.sendResponse(res, 400, { success: false, message: 'Invalid Request.' });
       // find user from db
       let user = await UsersDB.findOne({ email })
@@ -150,6 +151,7 @@ export class UserController {
   async addUser(req: Request, res: Response) {
     try {
       logger.debug('Add User', req.body);
+      //you need to encrypt the password from frontend and send the password
       let rolesData = await RolesDB.findOne({ name: "USER" }).exec();
       if (!rolesData) return this.sendResponse(res, 404, { success: false, message: 'Invalid Role' });
       req.body.role_id = rolesData._id;
@@ -231,5 +233,48 @@ export class UserController {
       return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
     }
   }
+  async getAllUsers(req: Request, res: Response) {
+    logger.debug('Get all users ');
+    try {
+      const { sort, skip, limit } = paginateQuery(req);
+      let mongoQuery = {};
+      let count = await UsersDB.countDocuments(mongoQuery).exec();
+      let data = await UsersDB.find(mongoQuery)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .exec();
+      return this.sendResponse(res, null, { success: true, message: 'Request Success', data, count });
+    } catch (error) {
+      logger.error('Get all users: ' + error);
+      return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
+    }
+  }
+
+  async getUserById(req: Request, res: Response) {
+    try {
+      logger.debug('Get  User  By Id: ' + req.params.id);
+      let productTypes = await UsersDB.findById(req.params.id).exec();
+      return this.sendResponse(res, null, { success: true, message: 'Request Success', data: productTypes });
+    } catch (error) {
+      logger.error('Get  User  By Id: ' + error);
+      return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
+
+    }
+  }
+
+  async updateUserById(req: Request, res: Response) {
+    try {
+      logger.debug('Update User Id: ' + req.params.id + ', Body', req.body);
+      let update = req.body;
+      let data = await UsersDB.findByIdAndUpdate(req.params.id, update).exec();
+      return this.sendResponse(res, null, { success: true, message: 'Request Success' });
+    } catch (error) {
+      logger.error('Update Usser  Id failed: ' + error);
+      return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
+    }
+  }
+
+  
 
 }
