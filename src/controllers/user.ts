@@ -170,7 +170,8 @@ export class UserController {
   async addUserAddress(req: Request, res: Response) {
     try {
       logger.debug('Add User Address', req.body);
-      if (!req.body.user_id) return this.sendResponse(res, 404, { success: false, message: 'User Id is Missing' });
+      if (!req.params.user_id) return this.sendResponse(res, 404, { success: false, message: 'User Id is Missing' });
+      req.body.user_id = req.params.user_id;
       let useraddress: UserAddress = req.body;
       let useraddressDB = new UserAddressDB(useraddress);
       let newAddress = await useraddressDB.save();
@@ -195,6 +196,18 @@ export class UserController {
       logger.error('Update User address: ' + error);
       return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
 
+    }
+  }
+  async getUserAddressByUserId(req: Request, res: Response) {
+    try {
+      logger.debug('Get User Address By User Id: ' + req.params.user_id);
+      let useraddress = await UserAddressDB.find({'user_id':req.params.user_id})
+        .populate('user_id', 'first_name last_name email phone')
+        .exec();
+      return this.sendResponse(res, null, { success: true, message: 'Request Success', data: useraddress });
+    } catch (error) {
+      logger.error('Get User Address By User Id: ' + error);
+      return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
     }
   }
   async getUserAddressById(req: Request, res: Response) {

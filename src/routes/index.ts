@@ -9,6 +9,7 @@ import { ProductTypeController } from '../controllers/product-type';
 import { ProductsController } from '../controllers/products';
 import { UserController } from '../controllers/user';
 import { checkUserJwt } from '../middleware/user';
+import { OrderController } from '../controllers/order';
 export class Routes {
 
   public uploadController: UploadController = new UploadController();
@@ -16,6 +17,7 @@ export class Routes {
   public productTypeController: ProductTypeController = new ProductTypeController();
   public productsController: ProductsController = new ProductsController();
   public userController: UserController = new UserController();
+  public orderController: OrderController = new OrderController();
   public routes(app: Application): Application {
 
     app.route('/')
@@ -85,9 +87,14 @@ export class Routes {
       .post(checkUserJwt, (req, res) => this.userController.updateUserAddress(req, res))
       .delete(checkUserJwt, (req, res) => this.userController.deleteUserAddressById(req, res));
 
-    app.route('/store/user-address')
-      .get(checkUserJwt, (req, res) => this.userController.addUserAddress(req, res))
-      .post(checkUserJwt, (req, res) => this.userController.updateUserAddress(req, res));
+    app.route('/store/user/:user_id/address')
+      .get(checkUserJwt, (req, res) => this.userController.getUserAddressByUserId(req, res))
+      .post(checkUserJwt, (req, res) => this.userController.addUserAddress(req, res));
+
+
+    app.route('/store/user/:user_id/order')
+      .get(checkUserJwt, (req, res) => this.orderController.getOrdersByUserid(req, res))
+      .post(checkUserJwt, (req, res) => this.orderController.addOrder(req, res));
 
 
     app.route('*').get(this.send404);

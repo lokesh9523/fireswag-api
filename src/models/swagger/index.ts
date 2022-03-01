@@ -104,9 +104,32 @@ export interface UserAddress {
   home_phone?: string;
   created_date?: string;
   office_phone?: string;
-  address: string;
+  address?: string;
   address2?: string;
   city: string;
   state: string;
   country: string;
+  pincode: string;
+}
+
+export interface Order {
+  /** String or object */
+  user_id: any;
+
+  /** String or object */
+  address_id: any;
+  created_date?: string;
+  updated_date?: string;
+  total_price: string;
+  total_quantity: string;
+  status: "PLACED" | "PENDING" | "DELIVERED" | "PAYNMENT PENDING" | "OUT FOR DELIVERY";
+  cart_details: CartDetails[];
+}
+
+export interface CartDetails {
+  /** String or object */
+  product_id: any;
+  price: string;
+  quantity: string;
+  discount?: string;
 }

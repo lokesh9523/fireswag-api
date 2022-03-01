@@ -9,7 +9,7 @@ import { SessionsDB } from '../models/sessions';
 import { AccountJwtObject } from '../utils/interfaces';
 
 export const checkUserJwt = async (req: Request, res: Response, next: NextFunction) => {
-    const token = <string>req.headers['fireswag-jwt-user-auth'];
+    const token = <string>req.headers['fireswag-jwt-store-auth'];
     try {
         let jwtPayload = <AccountJwtObject>jwt.verify(token, config.JWT_USER_SECRET);
         res.locals.jwtPayload = jwtPayload;
