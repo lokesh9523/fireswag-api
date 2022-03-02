@@ -37,6 +37,7 @@ export class ProductsController {
             const { sort, skip, limit } = paginateQuery(req);
             let mongoQuery = {};
             const { product_type_id } = req.query;
+            mongoQuery['active'] = true;
             if (product_type_id) { mongoQuery['product_type_id'] = product_type_id; }
             let count = await ProductsDB.countDocuments(mongoQuery).exec();
             let data = await ProductsDB.find(mongoQuery)
