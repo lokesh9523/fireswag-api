@@ -59,6 +59,9 @@ export class Routes {
     app.route('/users')
       .get(checkJwt, (req, res) => this.userController.getAllUsers(req, res));
 
+    app.route('/users/search')
+      .get(checkJwt, (req, res) => this.userController.getUsersByIds(req, res));
+
     // Upload Image
     app.route('/upload-image')
       .post(checkJwt, (req, res) => this.uploadController.uploadFile(req, res));

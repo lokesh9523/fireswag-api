@@ -275,6 +275,25 @@ export class UserController {
     }
   }
 
-  
+  async getUsersByIds(req: Request, res: Response) {
+    logger.debug('Get users by ids ');
+    try {
+      const { sort, skip, limit } = paginateQuery(req);
+      let mongoQuery = {};
+      mongoQuery['_id'] = ['$in' => req.body.ids];
+      let count = await UsersDB.countDocuments(mongoQuery).exec();
+      let data = await UsersDB.find(mongoQuery)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .exec();
+      return this.sendResponse(res, null, { success: true, message: 'Request Success', data, count });
+    } catch (error) {
+      logger.error('Get users by ids: ' + error);
+      return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
+    }
+  }
+
+
 
 }
