@@ -280,7 +280,7 @@ export class UserController {
     try {
       const { sort, skip, limit } = paginateQuery(req);
       let mongoQuery = {};
-      mongoQuery['_id'] = {'$in': req.body.ids};
+      mongoQuery['_id'] = {'$in': req.body.uids};
       let count = await UsersDB.countDocuments(mongoQuery).exec();
       let data = await UsersDB.find(mongoQuery)
         .sort(sort)

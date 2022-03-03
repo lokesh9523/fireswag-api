@@ -51,6 +51,9 @@ export class Routes {
       .get(checkJwt, (req, res) => this.productsController.getAllProductByType(req, res))
       .post(checkJwt, (req, res) => this.productsController.addProduct(req, res));
 
+    app.route('/products/search')
+      .post(checkJwt, (req, res) => this.productsController.getProductsByIds(req, res));
+
     //users
     app.route('/user/:id')
       .get(checkJwt, (req, res) => this.userController.getUserById(req, res))
