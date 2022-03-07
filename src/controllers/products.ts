@@ -127,7 +127,7 @@ export class ProductsController {
           let rows = [];
           let filename = req.body.name;
 
-          fs.createReadStream('public/images/' + filename);
+          fs.createReadStream('public/images/' + filename)
           .pipe(parse({ headers: true }))
           .on('error', error => console.error(error))
           .on('data', row => {
