@@ -54,6 +54,9 @@ export class Routes {
     app.route('/products/search')
       .post(checkJwt, (req, res) => this.productsController.getProductsByIds(req, res));
 
+    app.route('/products/bulk-upload')
+      .post(checkJwt, (req, res) => this.productsController.bulkUpload(req, res));
+
     //users
     app.route('/user/:id')
       .get(checkJwt, (req, res) => this.userController.getUserById(req, res))

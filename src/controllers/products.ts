@@ -5,6 +5,8 @@ import { Roles, ResponseFormat, ProductType, Products } from '../models/swagger'
 import { ProductTypeDB } from '../models/product-type';
 import { ProductsDB } from '../models/products';
 import { paginateQuery } from '../lib/utlis';
+const { parse } = require('fast-csv');
+const fs = require('fs');
 
 export class ProductsController {
 
@@ -119,6 +121,29 @@ export class ProductsController {
       }
     }
 
+    async bulkUpload(req: Request, res: Response) {
+      logger.debug('Bulk upload products ');
+      try {
+          let rows = [];
+          let filename = req.body.name;
 
+          fs.createReadStream('public/images/' + filename);
+          .pipe(parse({ headers: true }))
+          .on('error', error => console.error(error))
+          .on('data', row => {
+              console.log(row);
+              //each row can be written to db
+              rows.push(row);
+          })
+          .on('end', rowCount => {
+              console.log(`Parsed ${rowCount} rows`);
+              //console.log(rows[81484].postcode); // this data can be used to write to a db in bulk
+          });
+        return this.sendResponse(res, null, { success: true, message: 'Request Success'});
+      } catch (error) {
+        logger.error('Bulk upload products error: ' + error);
+        return this.sendResponse(res, 500, { success: false, message: error.message || JSON.stringify(error) });
+      }
+    }
 
 }
