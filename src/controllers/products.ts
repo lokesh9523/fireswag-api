@@ -127,13 +127,42 @@ export class ProductsController {
           let rows = [];
           let filename = req.body.name;
 
+          let productTypes = await ProductTypeDB.find().exec();
+
           fs.createReadStream('public/images/' + filename)
           .pipe(parse({ headers: true }))
           .on('error', error => console.error(error))
           .on('data', row => {
-              console.log(row);
+              //console.log(row);
               //each row can be written to db
               rows.push(row);
+
+              let productTypeName = row['Product Type'];
+              let productTypeId = '';
+              productTypes.forEach((value) => {
+                  if(value['name'] == productTypeName){
+                      productTypeId = value['_id'];
+                  }
+              })
+
+              let date = new Date();
+              let created_date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString();
+
+              let productObj = {};
+              productObj['product_type_id'] = productTypeId;
+              productObj['name'] = row['Product Name'];
+              productObj['description'] = row['Description'];
+              productObj['price'] = row['Price'];
+              productObj['discount'] = row['Discount'];
+              productObj['total_count'] = row['Quantity'];
+              productObj['created_date'] = created_date;
+              productObj['pre_booking_price'] = row['Pre Booking Price'];
+              productObj['pre_booking'] = true;
+              productObj['active'] = true;
+              productObj['image_url'] = '';
+
+              let productsDB = new ProductsDB(productObj);
+              productsDB.save();
           })
           .on('end', rowCount => {
               console.log(`Parsed ${rowCount} rows`);

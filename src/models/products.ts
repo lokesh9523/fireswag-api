@@ -13,7 +13,7 @@ const ProductsSchema = new Schema({
     discount: { type: String },
     total_count: { type: Number, required: true },
     pre_booking: { type: Boolean, default: false },
-    image_url: { type: String, required: true },
+    image_url: { type: String, required: false },
     pre_booking_price: { type: String },
     last_updated: { type: Date, required: true, default: new Date() }
 });
