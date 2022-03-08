@@ -42,11 +42,12 @@ export class ProductsController {
             mongoQuery['active'] = true;
             if (product_type_id) { mongoQuery['product_type_id'] = product_type_id; }
             let count = await ProductsDB.countDocuments(mongoQuery).exec();
+            let final_limit = limit != -1 ? limit : count;
             let data = await ProductsDB.find(mongoQuery)
                 .populate('product_type_id', 'name')
                 .sort(sort)
                 .skip(skip)
-                .limit(limit)
+                .limit(final_limit)
                 .exec();
             return this.sendResponse(res, null, { success: true, message: 'Request Success', data, count });
         } catch (error) {
